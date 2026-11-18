@@ -12,6 +12,7 @@ import { clubProfileText, homeText as text, profileText, squadText } from "./lab
 import { percentText } from "./MedicalGroup";
 import { ClubLogo, PICTURE_SIZE } from "./Picture";
 import { ReputationMeter, useProfileDetails } from "./ProfileParts";
+import { RebuildTools } from "./RebuildTools";
 import { SquadTab } from "./SquadTab";
 import type { ClubDetails, ClubPage, ClubSummary, ClubTeam, FmDate, SquadPlayer, StaffPage, StaffSummary } from "./types";
 
@@ -177,6 +178,10 @@ export function MyClub({ version, gameDate, onOpenClub, onEmpty }: MyClubProps) 
               onOpenClub={onOpenClub}
               onPick={() => setPicking(true)}
             />
+            {/* The rebuild toolkit of this fork: only for a club the user manages, not one followed. */}
+            {subject.manager !== null && (
+              <RebuildTools key={`rebuild-${subject.uid}`} clubUid={subject.uid} gameDate={gameDate} />
+            )}
             <SquadTab
               key={`squad-${subject.uid}`}
               clubUid={subject.uid}

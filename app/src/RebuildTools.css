@@ -1,0 +1,109 @@
+/* The rebuild toolkit on "My club" (RebuildTools.tsx). */
+
+.rebuild {
+  flex: none;
+  padding: 12px 0 14px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.rebuild-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rebuild h3 {
+  margin: 0 0 2px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.rebuild h4 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.rebuild p {
+  margin: 0;
+}
+
+.rebuild-tools {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.rebuild-tool {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--raised);
+}
+
+.rebuild-tool .muted {
+  flex: 1;
+  font-size: 13px;
+}
+
+.rebuild-tool button {
+  align-self: flex-start;
+  min-height: 34px;
+  padding: 0 16px;
+}
+
+.rebuild-input {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 13px;
+}
+
+.rebuild-input input {
+  width: 100%;
+}
+
+.rebuild-plan,
+.rebuild-done {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--field);
+}
+
+.rebuild-plan table {
+  width: 100%;
+  margin: 8px 0;
+  border-collapse: collapse;
+}
+
+.rebuild-plan th,
+.rebuild-plan td {
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.rebuild-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.rebuild-done {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.rebuild-message {
+  margin-top: 10px;
+  color: var(--muted);
+}

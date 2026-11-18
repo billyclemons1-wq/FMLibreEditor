@@ -1,5 +1,10 @@
 # FMLibreEditor
 
+> **BC's fork.** This copy adds a **Rebuild toolkit** to the My club page: upgrade facilities a step, clear the
+> debt, add to the transfer budget, raise the wage budget, and extend young players' contracts. Every tool shows its
+> changes before writing anything and can be undone. Downloads are on this fork's
+> [Releases page](https://github.com/billyclemons1-wq/FMLibreEditor/releases), built by `fork-build.yml`.
+
 A free, open-source live editor for **Football Manager 27**. Edit players, staff and clubs
 while the game runs.
 
