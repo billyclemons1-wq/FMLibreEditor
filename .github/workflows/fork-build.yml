@@ -1,0 +1,77 @@
+name: Fork build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app/**"
+      - "crates/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - ".github/workflows/fork-build.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fork-build
+  cancel-in-progress: true
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Install the interface's packages
+        working-directory: app
+        run: npm ci
+
+      - name: Build the installer
+        working-directory: app
+        shell: bash
+        run: |
+          echo '{"bundle":{"createUpdaterArtifacts":false}}' > unsigned.conf.json
+          npx tauri build --bundles nsis --config unsigned.conf.json
+
+      - name: Package the installer and the portable zip
+        id: package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force out | Out-Null
+          $setup = Get-ChildItem target/release/bundle/nsis/*-setup.exe | Select-Object -First 1
+          Copy-Item $setup.FullName out/FMLibreEditor-Setup.exe
+          New-Item -ItemType Directory -Force portable/FMLibreEditor | Out-Null
+          Copy-Item target/release/FMLibreEditor.exe portable/FMLibreEditor/
+          Copy-Item docs/portable-readme.txt portable/FMLibreEditor/README.txt
+          Compress-Archive -Path portable/FMLibreEditor -DestinationPath out/FMLibreEditor-portable.zip
+          $version = (Get-Content app/src-tauri/tauri.conf.json | ConvertFrom-Json).version
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: FMLibreEditor-windows
+          path: out/*
+
+      - name: Publish the release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.package.outputs.version }}
+          name: FMLibreEditor ${{ steps.package.outputs.version }} (BC's fork)
+          target_commitish: ${{ github.sha }}
+          make_latest: "true"
+          body: |
+            FMLibreEditor-Setup.exe is the installer. FMLibreEditor-portable.zip needs no install: extract it and run FMLibreEditor.exe.
+            New in this fork: the Rebuild toolkit on My club.
+          files: out/*
